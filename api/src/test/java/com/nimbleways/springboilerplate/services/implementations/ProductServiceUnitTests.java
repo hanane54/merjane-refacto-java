@@ -1,13 +1,16 @@
 package com.nimbleways.springboilerplate.services.implementations;
 
 import java.util.Optional;
+import java.util.Set;
 
 import com.nimbleways.springboilerplate.entities.Product;
+import com.nimbleways.springboilerplate.entities.Order;
 import com.nimbleways.springboilerplate.entities.ProductType;
 import com.nimbleways.springboilerplate.repositories.ProductRepository;
 import com.nimbleways.springboilerplate.services.NotificationService;
 import com.nimbleways.springboilerplate.repositories.OrderRepository;
 import com.nimbleways.springboilerplate.utils.Annotations.UnitTest;
+import com.nimbleways.springboilerplate.exceptions.OrderNotFoundException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +22,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.nimbleways.springboilerplate.exceptions.OrderNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 @UnitTest
@@ -58,6 +60,17 @@ public class ProductServiceUnitTests {
     public void processOrder_notFoundOrder(){
         Mockito.when(orderRepository.findById(99L)).thenReturn(Optional.empty());
         assertThrows( OrderNotFoundException.class, () -> productService.processOrder(99L));
+    }
+
+    @Test
+    public void processOrder_decrementAvailableAfterProcessNormalProduct(){
+        Product product =new Product(1L, 10, 15, ProductType.NORMAL, "RJ45 Cable", null, null, null);
+        Order order = new Order(1L, Set.of(product));
+        Mockito.when( orderRepository.findById(1L)).thenReturn(Optional.of(order));
+        productService.processOrder(1L);
+        assertEquals(14, product.getAvailable() );
+        Mockito.verify(productRepository).save(product);
+
     }
 
 }
