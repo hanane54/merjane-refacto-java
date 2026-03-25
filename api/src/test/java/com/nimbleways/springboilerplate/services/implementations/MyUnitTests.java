@@ -1,7 +1,9 @@
 package com.nimbleways.springboilerplate.services.implementations;
 
 import com.nimbleways.springboilerplate.entities.Product;
+import com.nimbleways.springboilerplate.entities.ProductType;
 import com.nimbleways.springboilerplate.repositories.ProductRepository;
+import com.nimbleways.springboilerplate.services.NotificationService;
 import com.nimbleways.springboilerplate.utils.Annotations.UnitTest;
 
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,7 @@ public class MyUnitTests {
     @Test
     public void test() {
         // GIVEN
-        Product product =new Product(null, 15, 0, "NORMAL", "RJ45 Cable", null, null, null);
+        Product product =new Product(null, 15, 0, ProductType.NORMAL, "RJ45 Cable", null, null, null);
 
         Mockito.when(productRepository.save(product)).thenReturn(product);
 
