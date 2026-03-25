@@ -1,4 +1,4 @@
-package com.nimbleways.springboilerplate.contollers;
+package com.nimbleways.springboilerplate.controllers;
 
 import com.nimbleways.springboilerplate.dto.product.ProcessOrderResponse;
 import com.nimbleways.springboilerplate.entities.Order;
