@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/orders")
-public class MyController {
+public class OrderController {
     @Autowired
     private ProductService ps;
 
@@ -36,7 +36,7 @@ public class MyController {
     @ResponseStatus(HttpStatus.OK)
     public ProcessOrderResponse processOrder(@PathVariable Long orderId) {
         Order order = or.findById(orderId).get();
-        System.out.println(order);
+        // System.out.println(order);
         List<Long> ids = new ArrayList<>();
         ids.add(orderId);
         Set<Product> products = order.getItems();
