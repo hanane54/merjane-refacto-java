@@ -16,7 +16,7 @@
 		<java.version>17</java.version>
 		<spring-security.version>5.6.9</spring-security.version>
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
-		<org.projectlombok.version>1.18.20</org.projectlombok.version>
+		<org.projectlombok.version>1.18.28</org.projectlombok.version>
 		<org.liquibase.version>4.17.2</org.liquibase.version>
 		<org.owasp.dependency-check-maven.version>7.1.1</org.owasp.dependency-check-maven.version>
 		<org.owasp.dependency-check-maven.suppressionFile>dependency-check-suppressions.xml</org.owasp.dependency-check-maven.suppressionFile>
@@ -85,7 +85,7 @@
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>${testcontainers.version}</version>
+			<version>1.16.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -107,13 +107,13 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.4.3</version>
+			<version>42.3.6</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
-			<version>${org.liquibase.version}</version>
+			<version>4.5.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.liquibase.ext</groupId>
@@ -141,6 +141,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>${org.projectlombok.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
@@ -183,7 +184,7 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
-			<version>4.9.3</version>
+			<version>3.14.9</version>
 		</dependency>
 		<dependency>
 			<groupId>com.squareup.retrofit2</groupId>
