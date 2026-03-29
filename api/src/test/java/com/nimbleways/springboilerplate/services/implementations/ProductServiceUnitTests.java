@@ -3,15 +3,10 @@ package com.nimbleways.springboilerplate.services.implementations;
 import java.util.Optional;
 import java.util.Set;
 
-import com.nimbleways.springboilerplate.entities.Product;
-import com.nimbleways.springboilerplate.entities.Order;
-import com.nimbleways.springboilerplate.entities.ProductType;
-import com.nimbleways.springboilerplate.repositories.ProductRepository;
-import com.nimbleways.springboilerplate.services.NotificationService;
-import com.nimbleways.springboilerplate.repositories.OrderRepository;
-import com.nimbleways.springboilerplate.utils.Annotations.UnitTest;
-import com.nimbleways.springboilerplate.exceptions.OrderNotFoundException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,8 +14,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import com.nimbleways.springboilerplate.entities.Order;
+import com.nimbleways.springboilerplate.entities.Product;
+import com.nimbleways.springboilerplate.entities.ProductType;
+import com.nimbleways.springboilerplate.exceptions.OrderNotFoundException;
+import com.nimbleways.springboilerplate.repositories.OrderRepository;
+import com.nimbleways.springboilerplate.repositories.ProductRepository;
+import com.nimbleways.springboilerplate.services.NotificationService;
+import com.nimbleways.springboilerplate.utils.Annotations.UnitTest;
 
 
 @ExtendWith(SpringExtension.class)
@@ -70,7 +71,33 @@ public class ProductServiceUnitTests {
         productService.processOrder(1L);
         assertEquals(14, product.getAvailable() );
         Mockito.verify(productRepository).save(product);
+    }
+
+    @Test
+    public void processOrder_notifyOutOfStock(){
+        Product product = new Product(1L, 5, 0, ProductType.NORMAL, "Cable", null, null, null);
+        Order order = new Order(1L, Set.of(product));
+        Mockito.when( orderRepository.findById(1L)).thenReturn(Optional.of(order)) ;
+        productService.processOrder(1L);
+
+        Mockito.verify(notificationService).sendDelayNotification(5, "Cable");
 
     }
+
+    @Test
+    public void processOrder_expirable(){
+        Product product = new Product(1L, 0, 10, ProductType.EXPIRABLE, "Food", LocalDate.now().plusDays(5), null, null);
+        Order order = new Order(1L, Set.of(product));
+        Mockito.when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+        productService.processOrder(1L);
+
+        
+        assertEquals(9, product.getAvailable());
+
+        Mockito.verify( productRepository ).save(product);
+    }
+
+    
+
 
 }
